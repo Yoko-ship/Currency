@@ -17,8 +17,8 @@ def get_currency_rate():
         return
     try:
         result = client.latest(baseCurrency,currencies=[currency])
-        value = result['data'][currency]["value"]
-        rate_result_label.config(text=value)
+        value = round(result['data'][currency]["value"],4)
+        rate_result_label.config(text=f"{baseCurrency} = {value} {currency}",fg="black")
     except Exception:
         rate_result_label.config(text="Произошла ошибка при получении курса",fg="red")
 
@@ -27,9 +27,8 @@ def get_currency_rate():
 def convertCurrencyInto():
     baseCurrency = baseCurrencyConvertEntry.get().upper()
     sum_entry = sumEntry.get()
-    convert_result_rate.config(text="Сумма принимает только число!",fg="red")
     currency = currencyConvertEntry.get().upper()
-    if not baseCurrency or not sum or not currency:
+    if not baseCurrency or not sum_entry or not currency:
         convert_result_rate.config(text="Пожалуста заполните все поля",fg="red")
         return
     try:
@@ -37,7 +36,7 @@ def convertCurrencyInto():
         result = client.latest(baseCurrency,currencies=[currency])
         value = result['data'][currency]["value"]
         finalResult = round(amount * value,2)
-        convert_result_rate.config(text=finalResult,fg='green')
+        convert_result_rate.config(text=f"{amount} {baseCurrency} = {finalResult} {currency}",fg='green')
     except Exception:
         convert_result_rate.config(text="Произошла ошибка при получении курса",fg="red")
 
